@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CandyJs 一个面向对象的 node mvc and rest 框架</title>
+<meta name="keywords" content="CandyJs node mvc RESTful" />
+<meta name="description" content="CandyJs 一个面向对象的 node mvc and rest 框架" />
+<meta name="generator" content="candyjs" />
+<meta name="author" content="candyjs" />
+<meta name="robots" content="all" />
+<meta name="copyright" content="since 2017" />
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<style type="text/css" rel="stylesheet">
+pre {font-size: 14px;}
+img {max-width: 100%;}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #1b809e;
+}
+.navbar {
+    margin-bottom: 0;
+}
+.bignav {
+    text-align: center;
+    color: #fff;
+    background-color: #186384;
+}
+.bignav a {
+    color: #fff;
+}
+.bignav a:hover {
+    color: #186384;
+    text-decoration: none;
+}
+.icon {
+    margin-top: 120px;
+}
+.icon img {
+    max-width: 100%;
+}
+.title {
+    display: block;
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+}
+.desc {
+    line-height: 40px;
+    font-size: 26px;
+}
+.github {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+}
+.github:hover {
+    background-color: #fff;
+    color: #186384;
+}
+.linkarea {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+.content {
+    font-size: 16px;
+    padding: 60px 0;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+.header {
+    font-size: 3em;
+    text-align: center;
+    margin: 60px 0 20px 0;
+}
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+}
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <a class="navbar-brand" href="/">Home</a>
+            <a class="navbar-brand" href="/doc.html">中文文档</a>
+            <a class="navbar-brand" href="/doc_en.html">Documentation</a>
+            <a class="navbar-brand" href="/donate.html">Donate</a>
+        </div>
+    </nav>
+</header>
+    
+<section class="bignav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="icon"><img src="./candy.png"></div>
+                <h1 class="title">CandyJs</h1>
+                <h3 class="desc">一个面向对象的优雅的 MVC and REST 框架</h3>
+            
+                <div class="linkarea">
+                    <a target="_blank" href="https://github.com/douyu-beijing/candyjs" class="github">GitHub</a>
+                    <a target="_blank" href="/doc.html" class="github">文档</a>
+                </div>
+                <h6></h6>
+            </div>
+        </div>
+    </div>
+</section>
+    
+<div class="content">
+    <div class="container">
+        <p>CandyJs 是一个 Node 框架，用于开发 Web 应用。CandyJs TypeScript 版本采用严格的 OOP 编写，并有着相对完善的新手指引文档</p>
+        <p>CandyJs 从诞生以来一直追求简洁可扩展的设计原则，在保持出色的性能和至简优雅代码的同时，也注重易用性。</p>
+    </div>
+</div>
+    
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+        
+            <div class="header">DEMO</div>
+            <blockquote class="bg-info">
+            使用 CandyJs 你只需要从一个入口文件开始，
+            入口文件的内容可以使用 CandyJs 自带的工具来生成
+            </blockquote>
+            
+<div>
+<pre><code>入口文件 index.js
+
+var CandyJs = require('candyjs');
+
+new CandyJs({
+    'id': 1,
+    
+    // 定义调试应用
+    'debug': true,
+    
+    // 定义应用路径
+    'appPath': __dirname + '/app'
+    
+}).listen(8090, function(){
+    console.log('listen on 8090');
+});
+</code></pre>
+</div>
+
+            <blockquote class="bg-info">
+                OK 上面就是 Hello World 所需要的全部入口文件内容了
+                <a target="_blank" href="/doc.html">接下来看看文档吧</a>
+            </blockquote>
+        </div>
+    </div>
+</div>
+    
+<footer>
+    <div class="container">
+        <h4>© CandyJs Since 2017 &nbsp; <small>编程是一门艺术。</small></h4>
+    </div>
+</footer>
+</body>
+</html>
