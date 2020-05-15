@@ -24,6 +24,7 @@ if(winWidth > 1200 && height + 70 > winHeight) {
     
 } else {
     nav.style.display = 'none';
+    nav.style.zIndex = '5';
     nav.style.width = '50%';
     nav.style.top = '0';
     nav.style.right = '0';
@@ -33,7 +34,7 @@ if(winWidth > 1200 && height + 70 > winHeight) {
     btn.innerHTML = '菜单';
     btn.style.position = 'fixed';
     btn.style.zIndex = '10';
-    btn.style.right = '40px';
+    btn.style.right = '20px';
     btn.style.bottom = '40px';
     btn.style.width = '50px';
     btn.style.height = '50px';
