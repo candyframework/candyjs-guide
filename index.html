@@ -44,6 +44,12 @@
             <p>
                 <code>CandyJs</code>实现了一套<code>动态路由</code>规范，您不需要提前注册所需要的路由，只需要输入网址<code>CandyJs</code>会自己找到路由对应的组件。
             </p>
+            <p>
+                <code>CandyJs</code>实现了正则路由的合并，多个正则路由我们会将其合成一个大路由，避免了路由逐个匹配带来的巨大性能损失
+            </p>
+            <p>
+                <code>CandyJs</code>实现了类的按需加载，所有文件只有用到时才去加载，这得益于框架定制的别名系统
+            </p>
 
             <h1 class="page-header"><a href="./index_en.html">英文</a></h1>
 
@@ -1137,9 +1143,9 @@ log.flush();  // 写入硬盘
 </code></pre>
 
             <p>
-                <code>targets</code>用于配置日志处理程序，现在只支持文件日志，所以上面配置了<code>file</code>字段
+                <code>targets</code>用于配置日志处理程序，现在只支持文件日志，所以上面配置了<code>file</code>字段，<code>candyjs</code>可以同时配置多个<code>targets</code>，只需要在和<code>file</code>字段平级的地方再添加一个日志配置，那么每次这日志，新配置的日志也会被执行。
             </p>
-            <p><code>flushInterval</code>表示日志写入硬盘的频率。这里指定每调用 10 次日志接口向硬盘同步一次</p>
+            <p><code>flushInterval</code>表示日志写入硬盘的频率。由于 IO 操作比较耗时，<code>candyjs</code>出于优化考虑，并不会每次调用日志接口就写日志，而是先缓存起来，在某一时刻一同写入。这里指定每调用 10 次日志接口向硬盘同步一次</p>
             <p>用户手动调用<code>flush()</code>也会触发同步日志到硬盘的操作</p>
 
             <h4><b>日志接口</b></h4>
