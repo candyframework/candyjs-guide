@@ -620,7 +620,7 @@ new CandyJs(new App({
             <h1 class="page-header" id="component"><b>组件 & 行为</b></h1>
 
             <h4><b>组件</b></h4>
-            <p>组件是实现<code>属性 (property) 行为 (behavior) 事件 (event)</code>的基类，如果一个类从组件类继承，那么这个类就拥有组件类的特性</p>
+            <p>组件是实现<code>行为 (behavior) 事件 (event)</code>的基类，如果一个类从<code>candy/core/Component</code>或其子类继承而来，那么这个类就拥有组件的特性</p>
             <p>
                 组件是<code>candy/core/Component</code>或其子类的实例
             </p>
@@ -635,12 +635,8 @@ new CandyJs(new App({
             </p>
             <ul>
                 <li>一个行为类可以用于在不改变原组件代码的情况下增强其功能</li>
-                <li>当行为附加到组件后，它将<code>注入</code>它的方法和属性到组件中，然后就可以像访问组件自己的方法和属性一样访问它们</li>
-                <li>行为类还能够监听组件的事件并作出响应</li>
+                <li>行为类能够监听组件的事件并作出响应，这对于拦截框架的核心事件，并对其做出处理提供了方便</li>
             </ul>
-
-            <h4><b>属性</b></h4>
-            <p>javascript 类的成员变量也被称为属性 properties</p>
 
             <h4><b>事件</b></h4>
             <p><code>CandyJs</code>中实现了一个观察者模式</p>
@@ -673,6 +669,10 @@ module.exports = IndexController;
 
             <h4><b>行为的使用</b></h4>
 
+            <blockquote class="bg-danger">
+                从 4.4.0 开始，我们对行为进行了重构，去除了作用不大的方法注入，保留了事件监听
+            </blockquote>
+
             <h6><b>定义行为</b></h6>
             <p>要定义行为，可以通过继承<code>candy/core/Behavior</code>或其子类来建立一个类</p>
 <pre><code>
@@ -681,23 +681,27 @@ module.exports = IndexController;
 var Candy = require('candyjs/Candy');
 var Behavior = Candy.include('candy/core/Behavior');
 
+// 行为类
 class MyBehavior extends Behavior {
     constructor() {
         super();
-
-        this.props1 = 1;
-        this.props2 = 2;
     }
 
-    myFun() {
-        // todo
+    // 监听 customEvent 事件
+    // 由于一个事件可以有多个处理程序 为保证顺序 这里必须使用 Map
+    events() {
+        return new Map([
+            ['customEvent', (e) => {
+                e.result = 'data processed by behavior';
+            }]
+        ]);
     }
 }
 
 module.exports = MyBehavior;
 </code></pre>
 
-            <p>以上代码定义了行为类<code>MyBehavior</code>并为要附加行为的组件提供了两个属性<code>prop1 prop2</code>和一个方法<code>myFun()</code></p>
+            <p>以上代码定义了行为类<code>MyBehavior</code>并监听了一个自定义事件<code>customEvent</code>
 
             <h6><b>附加行为到组件</b></h6>
             <p>可以通过<code>静态配置</code>或者<code>动态方法</code>形式附加行为到组件</p>
@@ -714,15 +718,17 @@ class IndexController extends Controller {
 
     // 重写方法
     behaviors() {
-
-        // 返回要附加的行为
-        return {
-            myBehavior: 'app/controllers/index/MyBehavior'
-        };
+        // 为当前控制器注入行为
+        return new Map([
+            ['myBehavior', new MyBehavior()]
+        ]);
     }
 
     run(req, res) {
-        res.end('hello');
+        let data = {result: ''};
+        this.trigger('customEvent', data);
+        
+        res.end(data.result);
     }
 
 }
@@ -743,49 +749,15 @@ class IndexController extends Controller {
     constructor(context) {
         super(context);
 
-        // 附加组件
-        this.attachBehavior('myBehavior', 'app/controllers/index/MyBehavior');
+        // 动态附加行为 行为里面会监听 customEvent 事件
+        this.attachBehavior('myBehavior', new MyBehavior());
     }
 
     run(req, res) {
-        res.end('hello');
-    }
-
-}
-
-module.exports = IndexController;
-</code></pre>
-
-            <h6><b>使用</b></h6>
-            <p>一旦行为附加到组件 就可以直接使用它</p>
-            <blockquote class="bg-info">
-                为了不必要的性能开销，<code>CandyJs</code>不会主动执行注入操作（或许后期会改动），要想使用行为类的功能，必须在调用行为类的功能之前手动调用一下<code>injectBehaviors()</code>方法
-            </blockquote>
-<pre><code>
-'use strict';
-
-var CandyJs = require('candyjs');
-var Candy = require('candyjs/Candy');
-var Controller = Candy.include('candy/web/Controller');
-
-class IndexController extends Controller {
-
-    constructor(context) {
-        super(context);
-
-        this.attachBehavior('myBehavior', 'app/controllers/index/MyBehavior');
-
-        // 手动调用
-        this.injectBehaviors();
-    }
-
-    run(req, res) {
-        // 使用行为类的功能
-        this.myFun();
-        console.log(this.props1);
-        console.log(this.props2);
-
-        res.end('hello');
+        let data = {result: ''};
+        this.trigger('customEvent', data);
+        
+        res.end(data.result);
     }
 
 }
@@ -1006,8 +978,8 @@ response.redirect('http://foo.com');
 
 <pre><code>
 var Response = Candy.include('candy/helpers/FileHelper');
-var Response = Candy.include('candy/helpers/StringHelper');
-var Response = Candy.include('candy/helpers/TimeHelper');
+var StringHelper = Candy.include('candy/helpers/StringHelper');
+var TimeHelper = Candy.include('candy/helpers/TimeHelper');
 
 // return /a/c
 var path = FileHelper.normalizePath('/a/./b/../c');
