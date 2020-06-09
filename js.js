@@ -10,14 +10,14 @@ var btn = document.createElement('div');
 nav.style.position = 'fixed';
 nav.style.width = width + 'px';
 
-if(winWidth > 1200 && height + 70 > winHeight) {
+if(winWidth > 1200) {
     window.addEventListener('scroll', () => {
         var top = document.documentElement.scrollTop || document.body.scrollTop;
         if(top > 100) {
             nav.style.top = 'auto';
             nav.style.bottom = '10px';
         } else {
-            nav.style.top = 'auto';
+            nav.style.top = '70px';
             nav.style.bottom = 'auto';
         }
     });
