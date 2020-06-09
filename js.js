@@ -11,16 +11,8 @@ nav.style.position = 'fixed';
 nav.style.width = width + 'px';
 
 if(winWidth > 1200) {
-    window.addEventListener('scroll', () => {
-        var top = document.documentElement.scrollTop || document.body.scrollTop;
-        if(top > 100) {
-            nav.style.top = 'auto';
-            nav.style.bottom = '10px';
-        } else {
-            nav.style.top = '70px';
-            nav.style.bottom = 'auto';
-        }
-    });
+    nav.style.height = '500px';
+    nav.style.overflowY = 'auto';
     
 } else {
     nav.style.display = 'none';
