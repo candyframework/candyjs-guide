@@ -1,11 +1,18 @@
 (function() {
 
+var header = document.querySelector('header');
 var nav = document.getElementById('rightnav');
 var width = nav.clientWidth;
 var height = nav.clientHeight;
 var winWidth = window.innerWidth;
 var winHeight = window.innerHeight;
 var btn = document.createElement('div');
+
+header.style.position = 'fixed';
+header.style.zIndex = '10';
+header.style.top = '0';
+header.style.left = '0';
+header.style.width = '100%';
 
 nav.style.position = 'fixed';
 nav.style.width = width + 'px';
