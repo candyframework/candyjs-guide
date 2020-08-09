@@ -18,7 +18,7 @@ nav.style.position = 'fixed';
 nav.style.width = width + 'px';
 
 if(winWidth > 1200) {
-    nav.style.height = '500px';
+    nav.style.height = '560px';
     nav.style.overflowY = 'auto';
     
 } else {
