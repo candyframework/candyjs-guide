@@ -1062,7 +1062,7 @@ log.flush();  // flush data to disk
 
             <h1 class="page-header" id="cache"><b>Cache</b></h1>
             <p>
-                <code>CandyJs</code> provides the ability to cache data processing but currently only supports file caching
+                <code>CandyJs</code>provides the ability to cache data processing but currently only supports file caching
             </p>
 
             <h4><b>Use caching</b></h4>
@@ -1107,6 +1107,25 @@ c.set('key2', 'value2', undefined, (err) => {
 </code></pre>
 </p>
 
+            <h1 class="page-header" id="exception"><b>Exception</b></h1>
+            <p><code>CandyJs</code>provide the ability to handle exception, you can implement the<code>candy/web/ExceptionHandler</code>class and override the<code>handlerException()</code>method to output custom message, or you can define a custom class with a<code>handlerException()</code>method</p>
+<pre><code>
+// index.js
+const app = new App({
+    'id': 1,
+    'appPath': __dirname + '/app',
+    // exception handler class
+    'exceptionHandler': 'app/ExceptionHandler'
+});
+
+// app/ExceptionHandler.js
+module.exports = class ExceptionHandler {
+    handlerException(res, exp) {
+        res.end('server error');
+    }
+}
+</code></pre>
+
             <h1 class="page-header" id="uploader"><b>FileUploader</b></h1>
             <blockquote class="bg-info">
                 <code>CandyJs</code>provides<code>@candyjs/uploader</code>component to implement file upload. <a target="_blank" href="https://github.com/douyu-beijing/candyjs-uploader">view detail</a>
@@ -1137,6 +1156,7 @@ c.set('key2', 'value2', undefined, (err) => {
                 <li><a href="#restful">RESTful</a></li>
                 <li><a href="#log">Log</a></li>
                 <li><a href="#cache">Cache</a></li>
+                <li><a href="#exception">Exception</a></li>
                 <li><a href="#uploader">FileUpload</a></li>
                 <li><a href="#database">Database</a></li>
             </ul>

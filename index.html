@@ -1339,6 +1339,25 @@ async function getSetData() {
                 <code>CandyJs</code>完善的代码设计使得进行缓存扩展非常容易 只需要让扩展的缓存类继承<code>candy/cache/ICache</code>并实现其中的方法即可
             </blockquote>
             
+            <h1 class="page-header" id="exception"><b>异常处理</b></h1>
+            <p><code>CandyJs</code>提供了方便的异常处理机制，系统默认使用<code>candy/web/ExceptionHandler</code>处理异常，用户可以通过继承重写该类的<code>handlerException()</code>方法来实现自定义输出，或者提供一个带有<code>handlerException()</code>方法的自定义类来处理错误</p>
+<pre><code>
+// index.js
+const app = new App({
+    'id': 1,
+    'appPath': __dirname + '/app',
+    // 定义异常处理类
+    'exceptionHandler': 'app/ExceptionHandler'
+});
+
+// app/ExceptionHandler.js
+module.exports = class ExceptionHandler {
+    handlerException(res, exp) {
+        res.end('server error');
+    }
+}
+</code></pre>
+            
             <h1 class="page-header" id="uploader"><b>文件上传</b></h1>
             <blockquote class="bg-info">
                 <code>CandyJs</code>提供了<code>@candyjs/uploader</code>来负责上传功能，<a target="_blank" href="https://github.com/douyu-beijing/candyjs-uploader">查看详情</a>
@@ -1371,6 +1390,7 @@ async function getSetData() {
                 <li><a href="#restful">RESTful</a></li>
                 <li><a href="#log">日志</a></li>
                 <li><a href="#cache">缓存</a></li>
+                <li><a href="#exception">异常处理</a></li>
                 <li><a href="#uploader">文件上传</a></li>
                 <li><a href="#database">数据库</a></li>
             </ul>
