@@ -404,12 +404,35 @@ class IndexController extends Controller {
             <p><code>MVC</code>模式中，每一个路由会对应到一个控制器文件</p>
 
             <h4><b>路由与控制器</b></h4>
-            <p>一般一个路由对应一个控制器 路由格式如下</p>
-            <pre><code>[route_prefix]/[controllerId]</code></pre>
-            <p>如果属于模块下的控制器 那么路由格式如下</p>
-            <pre><code>[moduleId]/[controllerId]</code></pre>
-            <p>如果用户的请求地址为<code>http://hostname/index</code>会执行<code>index</code>控制器的<code>run</code>入口动作</p>
-            <p>如果用户的请求地址为<code>http://hostname/bbs/index</code>会执行<code>bbs</code>模块的<code>index</code>控制器的<code>run</code>入口动作 或者执行普通控制器的<code>bbs</code>目录下的<code>index</code>控制器的<code>run</code>入口动作</p>
+            <p>一般一个路由对应一个控制器 路由有如下两种格式</p>
+            <ol>
+                <li><p><code>route_prefix[/controllerId]</code></p></li>
+                <li><p><code>moduleId[/controllerId]</code></p></li>
+            </ol>
+            <ul>
+                <li>
+                    <p>直接访问域名 <a>http://localhost/</a></p>
+                    <p>会默认映射到 <code>app/controllers/IndexControlelr</code> 控制器</p>
+                </li>
+                <li>
+                    <p>访问 <a>http://localhost/user</a></p>
+                    <p>首先会查找是否存在 <code>user</code> 模块</p>
+                    <p>如果存在，会映射到 <code>app/modules/user/controllers/IndexController</code></p>
+                    <p>如果不存在，则会映射到 <code>app/controllers/user/IndexController</code></p>
+                </li>
+                <li>
+                    <p>访问 <a>http://localhost/user/profile</a></p>
+                    <p>首先会查找是否存在 <code>user</code> 模块</p>
+                    <p>如果存在，会映射到 <code>app/modules/user/controllers/ProfileController</code></p>
+                    <p>如果不存在，则会映射到 <code>app/controllers/user/ProfileController</code></p>
+                </li>
+                <li>
+                    <p>访问 <a>http://localhost/user/profile/settings</a></p>
+                    <p>首先会查找是否存在 <code>user</code> 模块</p>
+                    <p>如果存在，会映射到 <code>app/modules/user/controllers/SettingsController</code></p>
+                    <p>如果不存在，则会映射到 <code>app/controllers/user/profile/SettingsController</code></p>
+                </li>
+            </ul>
 
             <p>控制器查找顺序 优先查找模块下的控制器<code>模块控制器 --> 普通控制器</code></p>
 

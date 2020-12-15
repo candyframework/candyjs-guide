@@ -309,11 +309,36 @@ module.exports = IndexController;
                 <code>afterActionCall()</code>does not guarantee execution after run() execution is complete
             </blockquote>
 
-            <h4><b>Routing and controller</b></h4>
-            <p>Generally a route corresponds to a controller</p>
-            <p><pre><code>[route_prefix]/[controllerId]</code></pre></p>
-            <p>If the controller belongs to the module then the routing format is as follows</p>
-            <p><pre><code>[moduleId]/[controllerId]</code></pre></p>
+            <h1 class="page-header" id="routers">Routers</h1>
+            <p>Generally a route corresponds to a controller, there are two kinds of routers</p>
+            <ol>
+                <li><p><code>route_prefix[/controllerId]</code></p></li>
+                <li><p><code>moduleId[/controllerId]</code></p></li>
+            </ol>
+            <ul>
+                <li>
+                    <p>when visit <a>http://localhost/</a></p>
+                    <p><code>app/controllers/IndexControlelr</code> will be created</p>
+                </li>
+                <li>
+                    <p>when visit <a>http://localhost/user</a></p>
+                    <p><code>user</code> module will be searched first</p>
+                    <p>if found the module, then <code>app/modules/user/controllers/IndexController</code> will be created</p>
+                    <p>if not found，then <code>app/controllers/user/IndexController</code> will be created</p>
+                </li>
+                <li>
+                    <p>when visit <a>http://localhost/user/profile</a></p>
+                    <p><code>user</code> module will be searched first</p>
+                    <p>if found, then <code>app/modules/user/controllers/ProfileController</code> will be created</p>
+                    <p>if not, then <code>app/controllers/user/ProfileController</code> will be created</p>
+                </li>
+                <li>
+                    <p>when visit <a>http://localhost/user/profile/settings</a></p>
+                    <p><code>user</code> module will be searched first</p>
+                    <p>if found then <code>app/modules/user/controllers/SettingsController</code> will be created</p>
+                    <p>if not, then <code>app/controllers/user/profile/SettingsController</code> will be created</p>
+                </li>
+            </ul>
 
             <p>Controller search order<code>module controller --> common controller</code></p>
 
@@ -1119,6 +1144,7 @@ module.exports = class ExceptionHandler {
                 <li><a href="#firstrun">First saying hello</a></li>
                 <li><a href="#appstruct">Application structure</a></li>
                 <li><a href="#controller">Controller</a></li>
+                <li><a href="#routers">Routers</a></li>
                 <li><a href="#model">Model</a></li>
                 <li><a href="#view">View</a></li>
                 <li><a href="#module">Module</a></li>
