@@ -286,11 +286,11 @@ var Controller = Candy.include('candy/web/Controller');
 
 class IndexController extends Controller {
 
-    beforeActionCall(req, res) {
+    beforeAction(actionEvent) {
         console.log('beforeActionCall')
     }
 
-    afterActionCall(req, res) {
+    afterAction(actionEvent) {
         console.log('afterActionCall')
     }
 

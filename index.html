@@ -281,7 +281,7 @@ module.exports = IndexController;
                     <li><code>beforeActionCall() 更名为 beforeAction()</code></li>
                     <li><code>afterActionCall() 更名为 afterAction()</code></li>
                 </ul>
-                <p><code>beforeAction(req, res)</code> 方法必须同步返回一个布尔类型的值，以表明程序是否继续向后执行。<code>true</code>表示告诉程序向下执行，其他返回值则会阻止程序运行，这给一些需要做验证或者其他预处理的业务提供了便利性</p>
+                <p><code>beforeAction(actionEvent)</code> 方法必须同步返回一个布尔类型的值，以表明程序是否继续向后执行。<code>true</code>表示告诉程序向下执行，其他返回值则会阻止程序运行，这给一些需要做验证或者其他预处理的业务提供了便利性</p>
             </blockquote>
 
 <pre><code>
@@ -295,13 +295,17 @@ class IndexController extends Controller {
     // 这里演示了如何阻止程序的默认执行
     // 改为手动控制程序走向
     // 由于修改了程序执行逻辑，控制器的默认入口 run() 就不需要了
-    beforeAction(req, res) {
+    // 4.7.0 及之前通过 return false 阻止程序继续运行
+    // 4.8.0 及之后 通过对 actionEvent.valid = false 阻止程序继续运行
+    beforeAction(actionEvent) {
+        actionEvent.valid = false;
+        
         setTimeout(() => {
             this.myRun(req, res);
         }, 1000);
 
         // 阻止程序的运行
-        return false;
+        // return false;
     }
 
     afterAction(req, res) {
