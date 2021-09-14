@@ -764,6 +764,7 @@ var App = require('candyjs/web/Application');
 var Hook = Candy.include('candy/core/Hook');
 var R = Candy.include('candy/midwares/Resource');
 
+// serve the public dir as static resources
 Hook.addHook(new R(__dirname + '/public').serve());
 
 new CandyJs(new App({
@@ -773,6 +774,9 @@ new CandyJs(new App({
 })).listen(2333, function(){
     console.log('listen on 2333');
 });
+
+// in view file, we can use static resource like this: /public/js/lib.js
+&lt;script src="/js/lib.js">&lt;/script>
 </code></pre>
 </p>
 
