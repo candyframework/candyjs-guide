@@ -928,6 +928,8 @@ var App = require('candyjs/web/Application');
 var Hook = Candy.include('candy/core/Hook');
 var R = Candy.include('candy/midwares/Resource');
 
+// 使用内置静态服务管理静态资源
+// 比如 public 目录下有个 js 文件夹保存了各种业务文件
 Hook.addHook(new R(__dirname + '/public').serve());
 
 new CandyJs(new App({
@@ -937,6 +939,10 @@ new CandyJs(new App({
 })).listen(2333, function(){
     console.log('listen on 2333');
 });
+
+
+// 之后可以在页面中访问静态资源 真实路径是 /public/js/lib.js
+<script src="/js/lib.js"></script>
 </code></pre>
 
             <h1 class="page-header" id="url"><b>URI & URL 类</b></h1>
