@@ -525,6 +525,183 @@ module.exports = Intercept;
                 <p>数据库操作 <a target="_blank" href="https://github.com/douyu-beijing/candyjs-db-mysql2">从这里了解详情</a></p>
                 <p>模型示例 <a target="_blank" href="https://github.com/douyu-beijing/candyjs-examples/tree/master/model">从这里了解详情</a></p>
             </blockquote>
+            
+            <h4><b>使用模型</b></h4>
+            <p>使用模型需要以下几个步骤</p>
+            <ol>
+                <li>定义模型</li>
+                <li>填充数据</li>
+                <li>校验数据</li>
+            </ol>
+            <h6><b>1. 定义模型</b></h6>
+            <p>在<code>CandyJs</code>中，模型由<code>属性（ attributes ）</code>和<code>规则（ rules ）</code>组成</p>
+            <p>属性是一个 JSON 对象，其中的键名一般与数据库定义的字段一一对应，规则是一个数组，配置了对属性的验证规则</p>
+            <p>每一个验证规则由三部分组成：规则验证器（由 rule 字段指定）、需要验证的属性列表（由 attributes 字段指定）、错误时的提示信息（由 messages 字段指定）</p>
+            <p>如下是一个用户信息模型</p>
+<pre><code>
+const Model = require('candyjs/model/Model');
+
+module.exports = class UserModel extends Model {
+    constructor() {
+        super();
+
+        // 模型属性
+        this.attributes = {
+            user_name: '',
+            password: '',
+            confirming: '',
+            email: ''
+        };
+        
+        this.attributesMap = {
+            user_name: 'name'
+        };
+    }
+
+    // 模型规则
+    rules() {
+        return [
+            {
+                rule: 'candy/model/RequiredValidator',
+                attributes: ['user_name', 'password', 'email'],
+                messages: ['用户名不能为空', '密码不能为空', '邮箱不能为空']
+            },
+            {
+                rule: 'candy/model/EqualValidator',
+                attributes: ['password', 'confirming'],
+                messages: ['两次密码不一致']
+            },
+            {
+                rule: 'candy/model/EmailValidator',
+                attributes: ['email'],
+                messages: ['邮箱格式不正确']
+            }
+        ];
+    }
+}
+</code></pre>
+
+            <h6><b>2. 填充数据</b></h6>
+            <p>当有了定义好的模型后，接下来就是为模型填充数据，数据一般由用户通过前台页面以表单形式发送到后台，这里以控制器处理为例</p>
+<pre><code>
+const UserModel = require('../../models/UserModel');
+
+module.exports = class PostController {
+
+    run(req, res) {
+        let model = new UserModel();
+        
+        // 数据填充
+        model.fill(req);
+
+        // todo ...
+        
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.end('');
+    }
+
+}
+</code></pre>
+            <blockquote class="bg-info">
+                <p>数据填充时，有可能前台表单的字段名称和模型中的属性名称不一致，这时候数据将会填充失败。</p>
+                <p>可以在模型定义时增加<code>attributesMap</code>字段，就如上面定义模型的例子那样：<code>this.attributesMap = { user_name: 'name' };</code></p>
+                <p>模型使用的是 user_name，而前台表单使用的是 name，通过此种映射方式实现字段不一致时的对应</p>
+            </blockquote>
+            
+            <h6><b>3. 校验数据</b></h6>
+            <p>模型提供了<code>validate()</code>方法，调用该方法，模型会执行<code>rules()</code>配置的校验规则对属性进行校验，并返回一个布尔值代表成功或者失败</p>
+            <p>如果验证失败，可以通过<code>getErrors()</code>获取错误信息，该方法返回一个数组，包含了所有的错误信息</p>
+<pre><code>
+const UserModel = require('../../models/UserModel');
+
+module.exports = class PostController {
+
+    run(req, res) {
+        let model = new UserModel();
+        
+        // 数据填充
+        model.fill(req);
+
+        // 执行校验
+        let valid = model.validate();
+        let errors = model.getErrors();
+
+        let data = JSON.stringify({
+            status_code: valid ? 0 : 1,
+            messages: errors
+        });
+
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.end(data);
+    }
+
+}
+</code></pre>
+
+            <h4><b>系统内置验证器</b></h4>
+            <p><code>CandyJs</code>内置了几个常用的验证器，如上述示例中<code>rule: 'candy/model/EmailValidator'</code>，它表示被验证的属性必须是一个邮箱格式</p>
+            <p>内置验证器如下</p>
+            <ul>
+                <li><code>BooleanValidator</code></li>
+                <li><code>EmailValidator</code></li>
+                <li><code>EqualValidator</code></li>
+                <li><code>RequiredValidator</code></li>
+                <li><code>StringValidator</code></li>
+            </ul>
+            
+            <h4><b>自定义验证器</b></h4>
+            <p>由于业务的不同，系统内置验证器无法满足所有需求，这时候就可以使用自定义验证器</p>
+            <p>自定义验证器比较简单，只需要从系统的<code>Vakudatir</code>继承，并实现其中的<code>validate()</code>方法即可</p>
+            <blockquote class="bg-info">
+                <p>需要注意的是，<code>validate()</code>方法的返回值是字符串，代表了验证失败的错误信息。如果没有错误，需要返回空字符</p>
+            </blockquote>
+<pre><code>
+// 定义一个验证数字范围的验证器
+const Validator = require('candyjs/model/Validator');
+
+class MyNumberValidator extends Validator {
+    constructor() {
+        super();
+
+        this.max = 100;
+        this.min = 1;
+    }
+
+    validate(attributeName, attributeValue) {
+        let info = this.getMessage(attributeName);
+
+        if(attributeValue < this.min || attributeValue > this.max) {
+            return '' === info ? 'number is invalid' : info;
+        }
+
+        return '';
+    }
+}
+</code></pre>
+
+            <h4><b>使用自定义验证器</b></h4>
+<pre><code>
+const Model = require('candyjs/model/Model');
+
+class UserModel extends Model {
+    constructor() {
+        super();
+
+        ...
+    }
+
+    rules() {
+        return [
+            {
+                rule: new MyNumberValidator(),
+                attributes: ['age'],
+                messages: ['年龄不合法']
+            }
+        ];
+    }
+}
+</code></pre>
+            
 
             <h1 class="page-header" id="view"><b>视图</b></h1>
             <p>视图是<code>MVC</code>模式中的一部分 它用于给终端用户展示页面</p>
@@ -1217,7 +1394,7 @@ var obj = Candy.createObject('lib/MyClass');
             </ul>
 <pre><code>
 var CandyJs = require('candyjs');
-var App = require('candyjs/web/RestApplication');
+var App = require('candyjs/rest/Application');
 
 var app = new App({
     id: 1,
