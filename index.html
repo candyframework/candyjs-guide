@@ -536,7 +536,7 @@ module.exports = Intercept;
             <h6><b>1. 定义模型</b></h6>
             <p>在<code>CandyJs</code>中，模型由<code>属性（ attributes ）</code>和<code>规则（ rules ）</code>组成</p>
             <p>属性是一个 JSON 对象，其中的键名一般与数据库定义的字段一一对应，规则是一个数组，配置了对属性的验证规则</p>
-            <p>每一个验证规则由三部分组成：规则验证器（由 rule 字段指定）、需要验证的属性列表（由 attributes 字段指定）、错误时的提示信息（由 messages 字段指定）</p>
+            <p>每一个验证规则由三部分组成：规则验证器（由 rule 字段指定，支持对象实例、类配置以及别名路径格式）、需要验证的属性列表（由 attributes 字段指定）、错误时的提示信息（由 messages 字段指定）</p>
             <p>如下是一个用户信息模型</p>
 <pre><code>
 const Model = require('candyjs/model/Model');
