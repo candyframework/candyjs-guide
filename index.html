@@ -1616,6 +1616,49 @@ module.exports = class ExceptionHandler {
                 <li><a target="_blank" href="https://github.com/douyu-beijing/candyjs-db-mysql2">MYSQL</a></li>
             </ul>
 
+            <h1 class="page-header" id="session"><b>Session</b></h1>
+            <blockquote class="bg-info">
+                <code>CandyJs</code>提供了
+                <a target="_blank" href="https://www.npmjs.com/package/@candyjs/session-cookie">@candyjs/session-cookie</a>
+                来实现基于 cookie 的 session
+            </blockquote>
+            <p>此外<code>CandyJs</code>还支持使用第三方 session 库，比如<code>express-session</code></p>
+<pre><code>
+// index.js
+const CandyJs = require('candyjs');
+const App = require('candyjs/web/Application');
+const Hook = require('candyjs/core/Hook');
+
+const session = require('express-session')
+
+Hook.addHook(session({
+    secret: 'some strings'
+}));
+
+new CandyJs(new App({
+    'id': 1,
+    'debug': true,
+    'appPath': __dirname + '/app'
+
+})).listen(2333, function(){
+    console.log('listen on 2333');
+});
+
+
+// 控制器中使用
+const Controller = require('candyjs/web/Controller');
+
+class IndexController extends Controller {
+    run(req, res) {
+        let n = req.session.views || 0;
+        req.session.views = ++n;
+
+        res.write('views: ' + n);
+        res.end();
+    }
+}
+</code></pre>
+
         </div>
         <div class="col-md-3" style="position: relative;">
             <ul id="rightnav" class="nav nav-pills nav-stacked" style="background-color: #f5f5f5">
@@ -1642,6 +1685,7 @@ module.exports = class ExceptionHandler {
                 <li><a href="#exception">异常处理</a></li>
                 <li><a href="#uploader">文件上传</a></li>
                 <li><a href="#database">数据库</a></li>
+                <li><a href="#session">Session</a></li>
             </ul>
         </div>
     </div>
