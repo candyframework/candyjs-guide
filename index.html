@@ -1145,7 +1145,10 @@ var R = Candy.include('candy/midwares/Resource');
 
 // 使用内置静态服务管理静态资源
 // 比如 public 目录下有个 js 文件夹保存了各种业务文件
+// 4.14.0 前使用以下方式
 Hook.addHook(new R(__dirname + '/public').serve());
+// 4.14.0 后使用以下方式
+// Hook.addHook(R.serve(__dirname + '/public'));
 
 new CandyJs(new App({
 
