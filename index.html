@@ -301,18 +301,17 @@ class IndexController extends Controller {
         actionEvent.valid = false;
         
         setTimeout(() => {
-            this.myRun(req, res);
+            this.myRun(actionEvent.request, actionEvent.response);
         }, 1000);
 
         // 阻止程序的运行
         // return false;
     }
 
-    afterAction(req, res) {
+    afterAction(actionEvent) {
         console.log('afterActionCall')
     }
 
-    // 入口
     myRun(req, res) {
         res.end('hello');
     }
