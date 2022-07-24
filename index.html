@@ -61,13 +61,16 @@ $ npm install candyjs
 </code></pre>
 
             <h1 class="page-header" id="firstrun"><b>第一次运行程序</b></h1>
-            <p>安装完 candyjs 后，需要创建一个具体项目来编写业务逻辑</p>
-            <p>使用如下命令创建一个基本应用框架</p>
-            <p>本例输出一个 MVC 模式 Hello word 程序，如果只想要写一些接口程序，请看<a href="#restful">这里</a></p>
-            
-            <pre><code>$ ./node_modules/.bin/_candy</code></pre>
+            <p>可以使用 <code>candyjs-cli</code>工具生成示例项目</p>
+<pre><code>
+$ npm install @candyjs/cli
+$ ./node_modules/.bin/candyjs-cli init --ts
+</code></pre>
 
-            <p>这样就会创建一个简单的目录结构</p>
+            <p>执行命令后，进入项目安装依赖</p>
+            <p>上述工具会生成一个 MVC 模式 Hello word 程序，如果只想要写一些接口程序，请看<a href="#restful">这里</a></p>
+
+            <p>项目目录结构如下</p>
 <pre><code>
 PROJECT_NAME
 |
@@ -89,7 +92,7 @@ PROJECT_NAME
 </code></pre>
 
             <p>进入 PROJECT_NAME 目录，启动程序</p>
-            <pre><code>$ node index.js</code></pre>
+            <pre><code>$ npm run start</code></pre>
             <p>访问程序</p>
             <pre><code><a href="http://localhost:2333" target="_blank">http://localhost:2333</a></code></pre>
 
