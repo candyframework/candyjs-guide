@@ -327,7 +327,8 @@ module.exports = IndexController;
 
             <h1 class="page-header" id="filter"><b>动作过滤器</b></h1>
             <p>动作过滤器是一种特殊的行为类，用于过滤用户的请求，如果项目中使用到了<code>动作切面</code>，那么可以考虑是否可以替换为<code>过滤器</code></p>
-            <p><code>candyjs</code>提供的过滤器可以从<code>core/ActionFilter.js</code>找到，该类主要用于在控制器的动作执行前进行一些预处理操作</p>
+            <p><code>candyjs</code>提供的过滤器可以从<code>core/ActionFilter</code>找到，该类主要用于在控制器的动作执行前进行一些预处理操作</p>
+            <p><code>ActionFilter</code>类有两个重要的方法：<code>beforeAction(actionEvent)</code>或<code>afterAction(actionEvent)</code>方法，方法仅有一个参数<code>actionEvent</code>，该参数有一个<code>valid</code>属性，当前一个 ActionFilter 子类设置了 <code>actionEvent.valid = false;</code>，那么后面的过滤器不再执行</p>
 
             <h4><b>过滤器的使用</b></h4>
             <h6><b>1. 编写过滤器</b></h6>
@@ -1716,7 +1717,7 @@ class IndexController extends Controller {
 
 <script src="./js.js"></script>
 
-<a href="https://www.revolvermaps.com/livestats/5ixry4498hq/" style="display: none" title="台湾、香港等是中国领土不可分割的部分">
+<a href="https://www.revolvermaps.com/livestats/5ixry4498hq/" style="display: none" title="中国统一势不可挡">
     <img src="//rf.revolvermaps.com/h/m/a/0/ff0000/128/0/5ixry4498hq.png" width="256" height="128" alt="Map" style="border:0;">
 </a>
 </body>
