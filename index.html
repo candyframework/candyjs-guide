@@ -453,6 +453,10 @@ class IndexController extends Controller {
                 <li><p><code>route_prefix[/controllerId]</code></p></li>
                 <li><p><code>moduleId[/controllerId]</code></p></li>
             </ol>
+            <blockquote class="bg-info">
+                <code>[/controllerId]</code>可以省略，如果省略，那么默认值为<code>index</code>，即默认控制器为<code>IndexControlelr</code>
+            </blockquote>
+            
             <ul>
                 <li>
                     <p>直接访问域名 <a>http://localhost/</a></p>
@@ -556,6 +560,8 @@ module.exports = class UserModel extends Model {
             email: ''
         };
         
+        // 表单与模型字段不一致时 使用此配置来做字段映射
+        // 如 模型使用 user_name 而前端表单使用 name
         this.attributesMap = {
             user_name: 'name'
         };
