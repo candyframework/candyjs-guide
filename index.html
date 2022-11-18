@@ -52,22 +52,19 @@
 
             <h1 class="page-header">入门</h1>
 
-            <h4><b>安装 candyjs</b></h4>
+            <h4><b>通过 cli 工具安装 candyjs</b></h4>
 <pre><code>
-$ mkdir demo
-$ cd demo
-$ npm init
-$ npm install candyjs
+$ npm install -g @candyjs/cli
+$
+$ # 运行命令 按照提示进行操作
+$ candyjs-cli
 </code></pre>
+            <blockquote class="bg-info">
+                <p>cli 工具目前只能用于创建项目。其他功能未实现</p>
+            </blockquote>
 
             <h1 class="page-header" id="firstrun"><b>第一次运行程序</b></h1>
-            <p>可以使用 <code>candyjs-cli</code>工具生成示例项目</p>
-<pre><code>
-$ npm install @candyjs/cli
-$ ./node_modules/.bin/candyjs-cli init --ts
-</code></pre>
-
-            <p>执行命令后，进入项目安装依赖</p>
+            <p>执行命令后，进入项目目录安装依赖</p>
             <p>上述工具会生成一个 MVC 模式 Hello word 程序，如果只想要写一些接口程序，请看<a href="#restful">这里</a></p>
 
             <p>项目目录结构如下</p>
