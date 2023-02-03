@@ -377,7 +377,7 @@ module.exports = class Cors extends ActionAspect {
             <p>使用切面很简单，只需要在控制器中添加<code>behaviors()</code>方法即可</p>
 <pre><code>
 class IndexController extends Controller {
-    // 'cors' 表示切面的名字
+    // 'cors' 是为切面类指定的别名
     // 'app/filters/Cors' 表示切面的类路径 这里表示 app/filters/Cors.js 类
     behaviors() {
         return [
@@ -394,15 +394,20 @@ class IndexController extends Controller {
                 <p>在 4.18 版本之前，<code>ActionAspect</code>类名为<code>ActionFilter</code></p>
                 <p>相较于使用切面过滤用户的请求，更好的做法是使用过滤器</p>
             </blockquote>
+            <blockquote class="bg-danger">
+                <p>切面不支持异步操作，如果业务逻辑中包含异步逻辑（比如异步读取数据库），那么就不能保证切面执行完成再执行控制器逻辑</p>
+                <p>所以，需要处理异步业务场景时，应该使用过滤器</p>
+            </blockquote>
             
             <h1 class="page-header"><b>过滤器</b></h1>
-            <p>过滤器的使用和切面类似，只不过过滤器类要实现<code>core/IFilter</code>接口，并且控制器中使用<code>filters()</code>函数返回过滤器配置</p>
+            <p>过滤器是实现了<code>core/IFinter</code>接口的类，或者任何具有<code>doFilter(req, res, chain)</code>函数的类</p>
+            <p>过滤器的使用和切面类似，但是过滤器的配置是由<code>filters()</code>函数返回的</p>
 <pre><code>
 class IndexController extends Controller {
     // 'app/filters/MyFilter' 表示过滤器的类路径
     filters() {
         return [
-            ['app/filters/MyFilter']
+            'app/filters/MyFilter'
         ];
     }
 

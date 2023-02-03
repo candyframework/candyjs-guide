@@ -269,13 +269,13 @@ class IndexController extends Controller {
 module.exports = IndexController;
 </pre></code>
 
-            <h4><b>动作切面</b></h4>
+            <h4><b>钩子函数</b></h4>
             <p>
                 如果控制器从<code>candy/web/Controller</code>继承而来，
-                那么就可以使用动作切面在控制器的动作执行前后实现一些业务逻辑
+                那么就可以使用钩子函数在控制器的动作执行前后实现一些业务逻辑
             </p>
             <blockquote class="bg-danger">
-                <p>由于前期设计导致动作切面作用不是很大，从 4.3.0 开始，我们对动作切面进行了重构</p>
+                <p>由于前期设计导致动作切面作用不是很大，从 4.3.0 开始，我们对钩子函数进行了重构</p>
                 <p>并且对方法名进行了调整</p>
                 <ul>
                     <li><code>beforeActionCall() 更名为 beforeAction()</code></li>
@@ -322,7 +322,7 @@ module.exports = IndexController;
 </pre></code>
 
 
-            <h1 class="page-header" id="filter"><b>动作切面</b></h1>
+            <h1 class="page-header" id="filter"><b>动作切面与过滤器</b></h1>
             <p>动作切面是一种特殊的行为类，用于过滤用户的请求</p>
             <p><code>candyjs</code>提供的切面可以从<code>core/ActionAspect</code>找到，该类主要用于在控制器的动作执行前进行一些预处理操作</p>
             <p><code>ActionAspect</code>类有两个重要的方法：<code>beforeAction(actionEvent)</code>或<code>afterAction(actionEvent)</code>方法，方法仅有一个参数<code>actionEvent</code>，该参数有一个<code>valid</code>属性，当前一个 ActionAspect 子类设置了 <code>actionEvent.valid = false;</code>，那么后面的切面类不再执行</p>
@@ -331,7 +331,7 @@ module.exports = IndexController;
             <h6><b>1. 编写切面类</b></h6>
             <p>使用切面，首先必须编写切面类，切面类需要从<code>candyjs/core/ActionAspect</code>类继承</p>
             <p>切面类可以根据具体需求选择实现<code>beforeAction()</code>或<code>afterAction()</code>方法</p>
-            <p><code>beforeAction()</code>会在控制器的动作执行前运行，<code>afterAction()</code>会在控制器的动作执行后运行</p>
+            <p>在没有异步操作的情况下，<code>beforeAction()</code>会在控制器的动作执行前运行，<code>afterAction()</code>会在控制器的动作执行后运行</p>
             <p>下面的切面类代码简单实现了一个为接口请求添加跨域头的功能，并实现了<code>beforeAction()</code>方法</p>
 <pre><code>
 // app/filters/Cors.js
@@ -424,7 +424,7 @@ module.exports = class Cors extends ActionAspect {
             <p>使用切面很简单，只需要在控制器中添加<code>behaviors()</code>方法即可</p>
 <pre><code>
 class IndexController extends Controller {
-    // 'cors' 表示切面的名字
+    // 'cors' 是为切面类指定的别名
     // 'app/filters/Cors' 表示切面的类路径 这里表示 app/filters/Cors.js 类
     behaviors() {
         return [
@@ -441,15 +441,22 @@ class IndexController extends Controller {
                 <p>在 4.18 版本之前，<code>ActionAspect</code>类名为<code>ActionFilter</code></p>
                 <p>相较于使用切面过滤用户的请求，更好的做法是使用过滤器</p>
             </blockquote>
+            <blockquote class="bg-danger">
+                <p>切面不支持异步操作，如果业务逻辑中包含异步逻辑（比如异步读取数据库），那么就不能保证切面执行完成再执行控制器逻辑</p>
+                <p>所以，需要处理异步业务场景时，应该使用过滤器</p>
+            </blockquote>
             
             <h1 class="page-header"><b>过滤器</b></h1>
-            <p>过滤器的使用和切面类似，只不过过滤器类要实现<code>core/IFilter</code>接口，并且控制器中使用<code>filters()</code>函数返回过滤器配置</p>
+            <p>过滤器是实现了<code>core/IFinter</code>接口的类，或者任何具有<code>doFilter(req, res, chain)</code>函数的类</p>
+            <p>过滤器的使用和切面类似，但是过滤器的配置是由<code>filters()</code>函数返回的</p>
 <pre><code>
+const Controller = require('candyjs/web/Controller');
+
 class IndexController extends Controller {
     // 'app/filters/MyFilter' 表示过滤器的类路径
     filters() {
         return [
-            ['app/filters/MyFilter']
+            'app/filters/MyFilter'
         ];
     }
 
@@ -462,13 +469,13 @@ module.exports = class MyFilter {
     doFilter(req, res, filterChain) {
         // todo something
         
-        // 调用下一个过滤器
+        // 需要手动调用下一个过滤器
         filterChain.doFilter(req, res);
     }
 }
 </pre></code>
             <blockquote class="bg-info">
-                <p>切面和过滤器都可以在控制器执行之前过滤用户的请求，但是切面支支持同步操作，而过滤器可以有异步操作</p>
+                <p>切面和过滤器都可以在控制器执行之前过滤用户的请求，但是切面只支持同步操作，而过滤器支持异步操作</p>
             </blockquote>
 
 
