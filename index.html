@@ -269,59 +269,6 @@ class IndexController extends Controller {
 module.exports = IndexController;
 </pre></code>
 
-            <h4><b>钩子函数</b></h4>
-            <p>
-                如果控制器从<code>candy/web/Controller</code>继承而来，
-                那么就可以使用钩子函数在控制器的动作执行前后实现一些业务逻辑
-            </p>
-            <blockquote class="bg-danger">
-                <p>由于前期设计导致动作切面作用不是很大，从 4.3.0 开始，我们对钩子函数进行了重构</p>
-                <p>并且对方法名进行了调整</p>
-                <ul>
-                    <li><code>beforeActionCall() 更名为 beforeAction()</code></li>
-                    <li><code>afterActionCall() 更名为 afterAction()</code></li>
-                </ul>
-                <p><code>beforeAction(actionEvent)</code> 方法必须同步返回一个布尔类型的值，以表明程序是否继续向后执行。<code>true</code>表示告诉程序向下执行，其他返回值则会阻止程序运行，这给一些需要做验证或者其他预处理的业务提供了便利性</p>
-            </blockquote>
-
-<pre><code>
-'use strict';
-
-var Candy = require('candyjs/Candy');
-var Controller = Candy.include('candy/web/Controller');
-
-class IndexController extends Controller {
-
-    // 这里演示了如何阻止程序的默认执行
-    // 改为手动控制程序走向
-    // 由于修改了程序执行逻辑，控制器的默认入口 run() 就不需要了
-    // 4.7.0 及之前通过 return false 阻止程序继续运行
-    // 4.8.0 及之后 通过对 actionEvent.valid = false 阻止程序继续运行
-    beforeAction(actionEvent) {
-        actionEvent.valid = false;
-        
-        setTimeout(() => {
-            this.myRun(actionEvent.request, actionEvent.response);
-        }, 1000);
-
-        // 阻止程序的运行
-        // return false;
-    }
-
-    afterAction(actionEvent) {
-        console.log('afterActionCall')
-    }
-
-    myRun(req, res) {
-        res.end('hello');
-    }
-
-}
-
-module.exports = IndexController;
-</pre></code>
-
-
             <h1 class="page-header" id="filter"><b>动作切面与过滤器</b></h1>
             <p>动作切面是一种特殊的行为类，用于过滤用户的请求</p>
             <p><code>candyjs</code>提供的切面可以从<code>core/ActionAspect</code>找到，该类主要用于在控制器的动作执行前进行一些预处理操作</p>
