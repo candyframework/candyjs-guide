@@ -89,7 +89,7 @@ PROJECT_NAME
 </code></pre>
 
             <p>进入 PROJECT_NAME 目录，启动程序</p>
-            <pre><code>$ npm run start</code></pre>
+            <pre><code>$ npm install && npm run start</code></pre>
             <p>访问程序</p>
             <pre><code><a href="http://localhost:2333" target="_blank">http://localhost:2333</a></code></pre>
 
@@ -394,7 +394,7 @@ class IndexController extends Controller {
             </blockquote>
             
             <h1 class="page-header"><b>过滤器</b></h1>
-            <p>过滤器是实现了<code>core/IFinter</code>接口的类，或者任何具有<code>doFilter(req, res, chain)</code>函数的类</p>
+            <p>过滤器是实现了<code>core/IFilter</code>接口的类，或者任何具有<code>doFilter(req, res, chain)</code>函数的类</p>
             <p>过滤器的使用和切面类似，但是过滤器的配置是由<code>filters()</code>函数返回的</p>
 <pre><code>
 const Controller = require('candyjs/web/Controller');
