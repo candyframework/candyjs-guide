@@ -246,7 +246,7 @@ new CandyJs(app).listen(2333, function(){
             <p>其他在入口文件中传入的参数都会作为自定义参数传入应用对象</p>
 
             <h1 class="page-header" id="controller"><b>应用控制器</b></h1>
-            <p>控制器是<code>MVC</code>模式中的一部分，是继承<code>candy/core/Controller</code>类的对象，负责处理请求和生成响应</p>
+            <p>控制器是<code>MVC</code>模式中的一部分，是继承<code>candy/core/AbstractController</code>类的对象，负责处理请求和生成响应</p>
             <p>业务逻辑一般都应该出现在控制器中，包括但不限于处理用户传递的数据，计算数据等</p>
 
             <h4><b>动作</b></h4>
@@ -1138,7 +1138,7 @@ var R = Candy.include('candy/midwares/Resource');
 // 使用内置静态服务管理静态资源
 // 比如 public 目录下有个 js 文件夹保存了各种业务文件
 // 4.14.0 前使用以下方式
-Hook.addHook(new R(__dirname + '/public').serve());
+Hook.addHook(R.serve(__dirname + '/public'));
 // 4.14.0 后使用以下方式
 // Hook.addHook(R.serve(__dirname + '/public'));
 

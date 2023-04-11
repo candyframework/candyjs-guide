@@ -248,7 +248,7 @@ new CandyJs(new App({
             <p>Other parameters passed in the entry file are passed to the application as a custom parameter</p>
 
             <h1 class="page-header" id="controller"><b>Application controller</b></h1>
-            <p>The controller is part of the<code>MVC</code>schema that inherits the object of<code>candy/core/Controller</code>class responsible for handling the request and generating the response</p>
+            <p>The controller is part of the<code>MVC</code>schema that inherits the object of<code>candy/core/AbstractController</code>class responsible for handling the request and generating the response</p>
 
             <h4><b>Action</b></h4>
             <p>
@@ -723,8 +723,8 @@ new CandyJs(new App({
             <h1 class="page-header" id="component"><b>Component & Behavior</b></h1>
 
             <h4><b>Component</b></h4>
-            <p>Component is the base class of<code>Property Behavior and Event</code></p>
-            <p>Components are instances of<code>candy/core/Controller</code>, or an extended class</p>
+            <p>Component is the base class of<code>Behavior and Event</code></p>
+            <p>Components are instances of<code>candy/core/AbstractController</code>, or an extended class</p>
             <p>Behavior classes are typically used in conjunction with component classes</p>
 
             <h4><b>Behavior</b></h4>
@@ -732,9 +732,6 @@ new CandyJs(new App({
             <p>A behavior class can be used to enhance its functionality without changing the original component code</p>
             <p>When a behavior is attached to a component, it will inject its methods and properties into the component and then access them as if they were to access the component's own methods and properties</p>
             <p>The behavior class also can listen to the component's events and respond</p>
-
-            <h4><b>Properties</b></h4>
-            <p>Membership variables for the javascript class are also known as properties</p>
 
             <h4><b>Event</b></h4>
             <p><code>CandyJs</code>implements an observer pattern</p>
@@ -894,7 +891,7 @@ var Hook = Candy.include('candy/core/Hook');
 var R = Candy.include('candy/midwares/Resource');
 
 // serve the public dir as static resources
-Hook.addHook(new R(__dirname + '/public').serve());
+Hook.addHook(R.serve(__dirname + '/public'));
 
 new CandyJs(new App({
 
