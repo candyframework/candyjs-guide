@@ -28,7 +28,7 @@
 <header>
     <nav class="navbar navbar-inverse">
         <div class="container">
-            <a target="_blank" class="navbar-brand" href="https://github.com/douyu-beijing/candyjs">CandyJs</a>
+            <a target="_blank" class="navbar-brand" href="https://github.com/candyframework/candyjs">CandyJs</a>
         </div>
     </nav>
 </header>
@@ -46,16 +46,16 @@
 
             <h1 class="page-header">Getting started</h1>
 
-            <h4><b>Use the scaffolding tool to create a project</b></h4>
+            <p>Use the @candyjs/cli command to create a project</p>
 <pre><code>
+$ # install the command
 $ npm install -g @candyjs/cli
 $
 $ # run the command
 $ candyjs-cli
 </code></pre>
-            <blockquote class="bg-info">
-                <p>This scaffolding tool can only init candyjs project</p>
-            </blockquote>
+            <p>The command above will be presented with prompts for several optional features such as project name and TypeScript.and so on.</p>
+            
 
             <h1 class="page-header" id="firstrun"><b>Run the program for the first time</b></h1>
             <p>After run the command, a simple application will be create</p>
@@ -88,7 +88,7 @@ PROJECT_NAME
 
             <h1 class="page-header" id="appstruct">Application structure</h1>
 
-            <h4><b>An application directory structure is as follows</b></h4>
+            <h4><b>An application directory structure is amy as follows</b></h4>
 <p>
 <pre><code>
 PROJECT_NAME
@@ -120,24 +120,10 @@ PROJECT_NAME
 |      |   |-- index.html
 |      |   |-- other.html
 |      |
-|   -- goods
+|      |-- goods
 |      |   |
 |      |   |-- index.html
 |      |   |-- other.html
-|      |
-|   -- modules
-|      |
-|      |-- reg
-|      |   |
-|      |   |-- controllers
-|      |   |   |
-|      |   |   |-- IndexController.js
-|      |   |
-|      |   |-- views
-|      |   |   |
-|      |   |   |-- index.html
-|      |   |
-|      |   |-- other dir
 |      |
 |   -- runtime
 |
@@ -147,7 +133,7 @@ PROJECT_NAME
             <h4><b>Entry script<code>index.js</code></b></h4>
             <p>
                 The entry script is the first loop in the application startup process.
-                There is only one entry script that contains the startup script that will listen to the client's connection
+                There is only one entry script that contains the startup code that will listen to the client's connection
             </p>
             <p>
                 The entry script basically does the following
@@ -179,7 +165,7 @@ new CandyJs(new App({
     'log': {
         'targets': {
             'file': {
-                'classPath': 'candy/log/file/Target'
+                'classPath': 'candy/log/file/Log'
             }
         }
     }
@@ -193,13 +179,13 @@ new CandyJs(new App({
             <h4><b>Application</b></h4>
             <p>
                 Applications are objects that govern the overall structure and lifecycle of<code>CandyJs</code>application systems.
-                Usually a framework contains two applications the<code>Web Application</code>and the<code>Console Application</code>but<code>CandyJs</code>only has a<code>Web Application</code>
+                <code>CandyJs</code>has two kinds of Application：<code>Web Application</code> and <code>Rest Application</code>
             </p>
 
             <h4><b>Application properties</b></h4>
             <p>
                 Various parameters can be introduced in the entry file.
-                These parameters will eventually be assigned to the application object
+                These parameters will eventually be assigned to the application instance object
             </p>
 
             <h6><b>Required properties</b></h6>
@@ -259,12 +245,11 @@ new CandyJs(new App({
 <pre><code>
 'use strict';
 
-var CandyJs = require('candyjs');
-var Candy = require('candyjs/Candy');
-var Controller = Candy.include('candy/web/Controller');
+const Controller = require('candyjs/web/Controller');
 
 class IndexController extends Controller {
 
+    // entry action
     run(req, res) {
         res.end('hello');
     }
@@ -275,20 +260,15 @@ module.exports = IndexController;
 </pre></code>
 </p>
 
-            <h1 class="page-header" id="filter"><b>动作切面</b></h1>
-            <p>动作切面是一种特殊的行为类，用于过滤用户的请求</p>
-            <p><code>candyjs</code>提供的切面可以从<code>core/ActionAspect</code>找到，该类主要用于在控制器的动作执行前进行一些预处理操作</p>
-            <p><code>ActionAspect</code>类有两个重要的方法：<code>beforeAction(actionEvent)</code>或<code>afterAction(actionEvent)</code>方法，方法仅有一个参数<code>actionEvent</code>，该参数有一个<code>valid</code>属性，当前一个 ActionAspect 子类设置了 <code>actionEvent.valid = false;</code>，那么后面的切面类不再执行</p>
+            <h1 class="page-header" id="filter"><b>ActionAspect</b></h1>
+            <p>ActionAspect is a special behavior class for filter user request.</p>
+            <p><code>ActionAspect</code>has two useful methods：<code>beforeAction(actionEvent)</code>and<code>afterAction(actionEvent)</code></p>
 
-            <h4><b>切面的使用</b></h4>
-            <h6><b>1. 编写切面类</b></h6>
-            <p>使用切面，首先必须编写切面类，切面类需要从<code>candyjs/core/ActionAspect</code>类继承</p>
-            <p>切面类可以根据具体需求选择实现<code>beforeAction()</code>或<code>afterAction()</code>方法</p>
-            <p><code>beforeAction()</code>会在控制器的动作执行前运行，<code>afterAction()</code>会在控制器的动作执行后运行</p>
-            <p>下面的切面类代码简单实现了一个为接口请求添加跨域头的功能，并实现了<code>beforeAction()</code>方法</p>
+            <h4><b>How to use</b></h4>
+            <h6><b>1. write a aspect program</b></h6>
+            <p>In order to use aspects, you must first write the aspect class，which is the subclass of<code>candyjs/core/ActionAspect</code></p>
 <pre><code>
 // app/filters/Cors.js
-const Candy = require('candyjs/Candy');
 const ActionAspect = require('candyjs/core/ActionAspect');
 
 module.exports = class Cors extends ActionAspect {
@@ -296,21 +276,16 @@ module.exports = class Cors extends ActionAspect {
         super();
 
         this.cors = {
-            // 允许访问该资源的 origin
             'Access-Control-Allow-Origin': '*',
-            // 允许使用的请求方法
             'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS',
-            // 允许请求中使用的头信息
             'Access-Control-Allow-Headers': '',
-            // 响应的有效时间为 秒
             'Access-Control-Max-Age': 86400,
-            // 如果出现在预检请求的响应中 表示实际请求是否可以使用 credentials
             'Access-Control-Allow-Credentials': true
         };
     }
 
     /**
-     * 实现前置方法，用于添加 http header 头
+     * add http header
      */
     beforeAction(actionEvent) {
         let request = actionEvent.request;
@@ -339,7 +314,7 @@ module.exports = class Cors extends ActionAspect {
                 ret['Access-Control-Allow-Origin'] = request.headers['origin'];
             }
 
-            // allow origin 为 * 和 credentials 不能同时出现
+            // allow origin=* and allow credentials can not appear at the same time
             if('*' === this.cors['Access-Control-Allow-Origin']) {
                 if(this.cors['Access-Control-Allow-Credentials']) {
                     throw new Error('Allowing credentials for wildcard origins is insecure');
@@ -349,17 +324,14 @@ module.exports = class Cors extends ActionAspect {
             }
         }
 
-        // 客户端请求方法
         if(undefined !== request.headers['access-control-request-method']) {
             ret['Access-Control-Allow-Methods'] = this.cors['Access-Control-Allow-Methods'];
         }
 
-        // 允许的 header
         if(undefined !== this.cors['Access-Control-Allow-Headers']) {
             ret['Access-Control-Allow-Headers'] = this.cors['Access-Control-Allow-Headers'];
         }
 
-        // 认证
         if(undefined !== this.cors['Access-Control-Allow-Credentials']) {
             ret['Access-Control-Allow-Credentials'] = this.cors['Access-Control-Allow-Credentials'] ? 'true' : 'false';
         }
@@ -373,38 +345,29 @@ module.exports = class Cors extends ActionAspect {
 }
 </pre></code>
 
-            <h6><b>2. 使用切面</b></h6>
-            <p>使用切面很简单，只需要在控制器中添加<code>behaviors()</code>方法即可</p>
+            <h6><b>2. work with aspect</b></h6>
+            <p>It is simple to use your accept class, just add a<code>behaviors()</code>method to your controller</p>
 <pre><code>
 class IndexController extends Controller {
-    // 'cors' 是为切面类指定的别名
-    // 'app/filters/Cors' 表示切面的类路径 这里表示 app/filters/Cors.js 类
+    // the value 'mycors' valus is an alias of your Aspect class, you can rename it to any
     behaviors() {
         return [
-            ['cors', 'app/filters/Cors']
+            ['mycors', 'app/filters/Cors']
         ];
     }
 
     run() {
-        // 此控制器动作执行前会先运行 behaviors() 方法指定的切面
+        // the behaviors() method will execute first
     }
 }
 </pre></code>
-            <blockquote class="bg-info">
-                <p>在 4.18 版本之前，<code>ActionAspect</code>类名为<code>ActionFilter</code></p>
-                <p>相较于使用切面过滤用户的请求，更好的做法是使用过滤器</p>
-            </blockquote>
-            <blockquote class="bg-danger">
-                <p>切面不支持异步操作，如果业务逻辑中包含异步逻辑（比如异步读取数据库），那么就不能保证切面执行完成再执行控制器逻辑</p>
-                <p>所以，需要处理异步业务场景时，应该使用过滤器</p>
-            </blockquote>
             
-            <h1 class="page-header"><b>过滤器</b></h1>
-            <p>过滤器是实现了<code>core/IFinter</code>接口的类，或者任何具有<code>doFilter(req, res, chain)</code>函数的类</p>
-            <p>过滤器的使用和切面类似，但是过滤器的配置是由<code>filters()</code>函数返回的</p>
+            <h1 class="page-header"><b>Filters</b></h1>
+            <p>A filter is a class that implements the <code>core/IFinter</code> interface，or any class with<code>doFilter (req, res, chain)</code>function can also considered to be a filter</p>
+            <p>The usage of filter and acpect are similar, except that the filter configuration is returned by the<code>filters()</code>function</p>
 <pre><code>
 class IndexController extends Controller {
-    // 'app/filters/MyFilter' 表示过滤器的类路径
+    // 'app/filters/MyFilter' is the class path of the filter
     filters() {
         return [
             'app/filters/MyFilter'
@@ -420,18 +383,13 @@ module.exports = class MyFilter {
     doFilter(req, res, filterChain) {
         // todo something
         
-        // 调用下一个过滤器
+        // manually execute the next filter
         filterChain.doFilter(req, res);
     }
 }
 </pre></code>
             <blockquote class="bg-info">
-                <p>切面和过滤器都可以在控制器执行之前过滤用户的请求，但是切面支支持同步操作，而过滤器可以有异步操作</p>
-            </blockquote>
-
-            <blockquote class="bg-danger">
-                Note that there may be asynchronous operations in the project code.
-                <code>afterActionCall()</code>does not guarantee execution after run() execution is complete
+                <p>Both aspect and filter can filter user requests before the controller executes, the filter is more user-friendly for asynchronous operations</p>
             </blockquote>
 
             <h1 class="page-header" id="routers">Routers</h1>
@@ -447,34 +405,36 @@ module.exports = class MyFilter {
             <ul>
                 <li>
                     <p>when visit <a>http://localhost/</a></p>
-                    <p><code>app/controllers/index/IndexControlelr</code> will be created</p>
+                    <p><code>app/controllers/index/IndexControlelr</code>will be created, this is the default home page controller</p>
                 </li>
                 <li>
                     <p>when visit <a>http://localhost/user</a></p>
-                    <p><code>user</code> module will be searched first</p>
-                    <p>if found the module, then <code>app/modules/user/controllers/IndexController</code> will be created</p>
-                    <p>if not found，then <code>app/controllers/user/IndexController</code> will be created</p>
+                    <p><code>user</code>module will be searched first</p>
+                    <p>if found, then<code>app/modules/user/controllers/IndexController</code>will be created</p>
+                    <p>if not found，then<code>app/controllers/user/IndexController</code>will be created</p>
                 </li>
                 <li>
                     <p>when visit <a>http://localhost/user/profile</a></p>
-                    <p><code>user</code> module will be searched first</p>
-                    <p>if found, then <code>app/modules/user/controllers/ProfileController</code> will be created</p>
-                    <p>if not, then <code>app/controllers/user/ProfileController</code> will be created</p>
+                    <p><code>user</code>module will be searched first</p>
+                    <p>if found, then<code>app/modules/user/controllers/ProfileController</code>will be created</p>
+                    <p>if not, then<code>app/controllers/user/ProfileController</code>will be created</p>
                 </li>
                 <li>
                     <p>when visit <a>http://localhost/user/profile/settings</a></p>
-                    <p><code>user</code> module will be searched first</p>
-                    <p>if found then <code>app/modules/user/controllers/SettingsController</code> will be created</p>
-                    <p>if not, then <code>app/controllers/user/profile/SettingsController</code> will be created</p>
+                    <p><code>user</code>module will be searched first</p>
+                    <p>if found then<code>app/modules/user/controllers/SettingsController</code>will be created, the 'profile' part will be ignored</p>
+                    <p>if not, then<code>app/controllers/user/profile/SettingsController</code>will be created</p>
                 </li>
             </ul>
 
-            <p>Controller search order<code>module controller --> common controller</code></p>
+            <blockquote class="bg-info">
+                <p>Controller search order<code>module controller --> common controller</code></p>
+            </blockquote>
 
             <h1 class="page-header" id="model"><b>Model</b></h1>
             <p>The model is part of the<code>MVC</code>pattern that represents the object of the business data</p>
             <blockquote class="bg-info">
-                <p><a target="_blank" href="https://github.com/douyu-beijing/candyjs-examples/tree/master/model">see here for detail</a></p>
+                <p><a target="_blank" href="https://github.com/candyframework/candyjs-examples/tree/master/model">see here for detail</a></p>
             </blockquote>
 
             <h1 class="page-header" id="view"><b>视图</b></h1>
@@ -482,7 +442,7 @@ module.exports = class MyFilter {
 
             <h4><b>模板引擎</b></h4>
             <blockquote class="bg-info">
-                <code>CandyJs</code>提供了<code>@candyjs/template-hbs</code>来负责模板渲染，<a target="_blank" href="https://github.com/douyu-beijing/candyjs-template-hbs">查看详情</a>
+                <code>CandyJs</code>提供了<code>@candyjs/template-hbs</code>来负责模板渲染，<a target="_blank" href="https://github.com/candyframework/candyjs-template-hbs">查看详情</a>
             </blockquote>
 
             <h4><b>其他方式使用模板引擎</b></h4>
@@ -1240,7 +1200,7 @@ c.set('key2', 'value2', undefined, (err) => {
 
             <h1 class="page-header" id="i18n"><b>I18N</b></h1>
             <blockquote class="bg-info">
-                <p>demo <a target="_blank" href="https://github.com/douyu-beijing/candyjs-examples/tree/master/action-filter">see here for detail</a></p>
+                <p>demo <a target="_blank" href="https://github.com/candyframework/candyjs-examples/tree/master/filter-i18n">see here for detail</a></p>
             </blockquote>
 
             <h1 class="page-header" id="exception"><b>Exception</b></h1>
@@ -1264,7 +1224,7 @@ module.exports = class ExceptionHandler {
 
             <h1 class="page-header" id="uploader"><b>FileUploader</b></h1>
             <blockquote class="bg-info">
-                <code>CandyJs</code>provides<code>@candyjs/uploader</code>component to implement file upload. <a target="_blank" href="https://github.com/douyu-beijing/candyjs-uploader">view detail</a>
+                <code>CandyJs</code>provides<code>@candyjs/uploader</code>component to implement file upload. <a target="_blank" href="https://github.com/candyframework/candyjs-uploader">view detail</a>
             </blockquote>
             
             <h1 class="page-header" id="database"><b>Database</b></h1>

@@ -27,7 +27,7 @@
 <header>
     <nav class="navbar navbar-inverse">
         <div class="container">
-            <a target="_blank" class="navbar-brand" href="https://github.com/douyu-beijing/candyjs">CandyJs</a>
+            <a target="_blank" class="navbar-brand" href="https://github.com/candyframework/candyjs">CandyJs</a>
         </div>
     </nav>
 </header>
@@ -101,20 +101,20 @@ PROJECT_NAME
 |
 |- index.js
 |
-|- node_modules 依赖模块目录
+|- node_modules
 |
 |- public 目录 一般存放静态文件
 |
 |- app 项目目录
 |  |
-|  |-- controllers 普通控制器目录
+|  |-- controllers
 |      |
-|      |-- user 用户组目录
+|      |-- user
 |      |   |
 |      |   |-- IndexController.js  - host:port/user/index 可以访问到该类
 |      |   |-- OtherController.js  - host:port/user/other 可以访问到该类
 |      |
-|      |-- goods 商品组目录
+|      |-- goods
 |      |   |
 |      |   |-- IndexController.js  - host:port/goods/index 可以访问到该类
 |      |   |-- OtherController.js  - host:port/goods/other 可以访问到该类
@@ -126,14 +126,14 @@ PROJECT_NAME
 |      |   |-- index.html
 |      |   |-- other.html
 |      |
-|   -- goods 商品组模板
+|      |-- goods 商品组模板
 |      |   |
 |      |   |-- index.html
 |      |   |-- other.html
 |      |
 |   -- modules 模块
 |      |
-|      |-- reg
+|      |-- newYearActivity
 |      |   |
 |      |   |-- controllers 模块控制器目录 其下无子目录
 |      |   |   |
@@ -254,8 +254,7 @@ new CandyJs(app).listen(2333, function(){
 <pre><code>
 'use strict';
 
-var Candy = require('candyjs/Candy');
-var Controller = Candy.include('candy/web/Controller');
+var Controller = require('candyjs/web/Controller');
 
 class IndexController extends Controller {
 
@@ -282,7 +281,6 @@ module.exports = IndexController;
             <p>下面的切面类代码简单实现了一个为接口请求添加跨域头的功能，并实现了<code>beforeAction()</code>方法</p>
 <pre><code>
 // app/filters/Cors.js
-const Candy = require('candyjs/Candy');
 const ActionAspect = require('candyjs/core/ActionAspect');
 
 module.exports = class Cors extends ActionAspect {
@@ -512,8 +510,8 @@ module.exports = Intercept;
             <p>模型是<code>MVC</code>模式中的一部分，是代表业务数据和规则的对象</p>
             <p>模型并不能直接操作数据库，它只提供数据存储和校验，数据库操作需要借助数据库操作类实现</p>
             <blockquote class="bg-info">
-                <p>数据库操作 <a target="_blank" href="https://github.com/douyu-beijing/candyjs-db-mysql2">从这里了解详情</a></p>
-                <p>模型示例 <a target="_blank" href="https://github.com/douyu-beijing/candyjs-examples/tree/master/model">从这里了解详情</a></p>
+                <p>数据库操作 <a target="_blank" href="https://github.com/candyframework/candyjs-db-mysql2">从这里了解详情</a></p>
+                <p>模型示例 <a target="_blank" href="https://github.com/candyframework/candyjs-examples/tree/master/model">从这里了解详情</a></p>
             </blockquote>
             
             <h4><b>使用模型</b></h4>
@@ -700,7 +698,7 @@ class UserModel extends Model {
 
             <h4><b>模板引擎</b></h4>
             <blockquote class="bg-info">
-                <code>CandyJs</code>提供了<code>@candyjs/template-hbs</code>来负责模板渲染，<a target="_blank" href="https://github.com/douyu-beijing/candyjs-template-hbs">查看详情</a>
+                <code>CandyJs</code>提供了<code>@candyjs/template-hbs</code>来负责模板渲染，<a target="_blank" href="https://github.com/candyframework/candyjs-template-hbs">查看详情</a>
             </blockquote>
 
             <h4><b>其他方式使用模板引擎</b></h4>
@@ -1579,7 +1577,7 @@ async function getSetData() {
             
             <h1 class="page-header" id="i18n"><b>国际化</b></h1>
             <blockquote class="bg-info">
-                <p>示例 <a target="_blank" href="https://github.com/douyu-beijing/candyjs-examples/tree/master/action-filter">从这里了解详情</a></p>
+                <p>示例 <a target="_blank" href="https://github.com/candyframework/candyjs-examples/tree/master/filter-i18n">从这里了解详情</a></p>
             </blockquote>
             
             <h1 class="page-header" id="exception"><b>异常处理</b></h1>
@@ -1603,7 +1601,7 @@ module.exports = class ExceptionHandler {
             
             <h1 class="page-header" id="uploader"><b>文件上传</b></h1>
             <blockquote class="bg-info">
-                <code>CandyJs</code>提供了<code>@candyjs/uploader</code>来负责上传功能，<a target="_blank" href="https://github.com/douyu-beijing/candyjs-uploader">查看详情</a>
+                <code>CandyJs</code>提供了<code>@candyjs/uploader</code>来负责上传功能，<a target="_blank" href="https://github.com/candyframework/candyjs-uploader">查看详情</a>
             </blockquote>
             
             <h1 class="page-header" id="database"><b>数据库</b></h1>
