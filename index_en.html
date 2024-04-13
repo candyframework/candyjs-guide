@@ -846,12 +846,14 @@ module.exports = IndexController;
 var CandyJs = require('candyjs');
 var Candy = require('candyjs/Candy');
 var App = require('candyjs/web/Application');
-
-var Hook = Candy.include('candy/core/Hook');
-var R = Candy.include('candy/midwares/Resource');
+var Hook = require('candyjs/core/Hook');
+var R = require('candyjs/midwares/Resource');
 
 // serve the public dir as static resources
-Hook.addHook(R.serve(__dirname + '/public'));
+// before 4.20.0
+// Hook.addHook(R.serve(__dirname + '/public'));
+// after 4.20.0, add multiple dir support
+Hook.addHook(new R(__dirname + '/public').serve());
 
 new CandyJs(new App({
 

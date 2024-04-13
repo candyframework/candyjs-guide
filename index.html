@@ -1129,16 +1129,15 @@ new CandyJs(new App({
 var CandyJs = require('candyjs');
 var Candy = require('candyjs/Candy');
 var App = require('candyjs/web/Application');
-
-var Hook = Candy.include('candy/core/Hook');
-var R = Candy.include('candy/midwares/Resource');
+var Hook = require('candyjs/core/Hook');
+var R = require('candyjs/midwares/Resource');
 
 // 使用内置静态服务管理静态资源
 // 比如 public 目录下有个 js 文件夹保存了各种业务文件
-// 4.14.0 前使用以下方式
-Hook.addHook(R.serve(__dirname + '/public'));
-// 4.14.0 后使用以下方式
+// 4.20.0 前使用以下方式
 // Hook.addHook(R.serve(__dirname + '/public'));
+// 4.20.0 后使用以下方式
+Hook.addHook(new R(__dirname + '/public').serve());
 
 new CandyJs(new App({
 
